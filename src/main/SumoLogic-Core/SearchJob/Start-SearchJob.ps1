@@ -98,6 +98,9 @@ function Start-SearchJob {
           $On = getDotNetDateTime ($status.histogramBuckets[$status.histogramBuckets.Count - 1].startTimestamp)
         }
         $processedMs = ($To - $On).TotalMilliseconds
+        if ($processedMs -gt 100){
+          $processedMs = 99
+        }        
         $text = "Processed records for last {0} of {1} minutes. Found {2} messages, {3} records" -f [long]($To - $On).TotalMinutes, [long]($To - $From).TotalMinutes, $status.messageCount, $status.recordCount
         Write-Progress -Activity $title -Status $text -PercentComplete ($processedMs / $totalMs * 100)
         Start-Sleep 1
